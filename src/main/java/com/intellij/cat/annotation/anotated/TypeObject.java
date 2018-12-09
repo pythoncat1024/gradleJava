@@ -2,13 +2,13 @@ package com.intellij.cat.annotation.anotated;
 
 import com.intellij.cat.annotation.Type;
 
-@Type(params = "idea")
+@Type(params = "idea", pos = 1)
 public class TypeObject {
 
-    @Type
+    @Type(pos = 3)
     private int add(int a, int b) {
 
-        @Type(params = "potato")
+        @Type(params = "potato", pos = 12)
         int c = a + b;
         return c;
     }

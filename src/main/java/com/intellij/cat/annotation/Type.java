@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 public @interface Type {
 
     String params() default "intelliJ";
+
+    int pos();
 }
