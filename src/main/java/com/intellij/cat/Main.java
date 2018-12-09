@@ -1,6 +1,5 @@
 package com.intellij.cat;
 
-import com.google.common.io.Files;
 import com.google.common.math.IntMath;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
