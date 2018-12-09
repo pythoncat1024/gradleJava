@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.LOCAL_VARIABLE})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Type {
+
+    String params() default "intelliJ";
 }
