@@ -1,5 +1,7 @@
 package com.intellij.cat;
 
+import com.google.common.io.Files;
+import com.google.common.math.IntMath;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -36,6 +38,14 @@ public class Main {
             Observable.interval(100, TimeUnit.MICROSECONDS)
                     .subscribe(tt -> System.out.println("tt == " + tt));
         }).start();
+
+        int add = IntMath.checkedAdd(1, 2);
+
+        System.out.println("add == " + add);
+
+
+        throw new RuntimeException("eee");
     }
+
 
 }
