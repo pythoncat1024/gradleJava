@@ -15,4 +15,6 @@ public @interface Type {
     String params() default "intelliJ";
 
     int pos();
+
+    char[] value();
 }
