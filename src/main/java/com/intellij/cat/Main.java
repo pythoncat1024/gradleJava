@@ -1,49 +1,43 @@
 package com.intellij.cat;
 
-import com.google.common.math.IntMath;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.concurrent.TimeUnit;
+import java.lang.reflect.Type;
+import java.util.Scanner;
 
 /**
  * main class
  */
 public class Main {
+
+    static boolean running = true;
+
     public static void main(String[] args) {
 
-        System.out.println("hello world");
+        System.out.println("我要坐电梯...");
 
 
-        System.out.println("xxx");
+        Scanner scanner = new Scanner(System.in);
+        while (running) {
 
-        Flowable.range(1, 5)
-                .subscribe(index -> {
-                    System.out.println("index == " + index);
-                });
+            String next = scanner.next();
 
-        new Thread(() -> {
-
-            Flowable.interval(0, 2, TimeUnit.SECONDS)
-                    .subscribeOn(Schedulers.computation())
-                    .doOnComplete(() -> System.out.println("hello duck"))
-                    .take(5)
-                    .doOnSubscribe(t -> {
-                        System.err.println("interval: " + t);
-                    })
-                    .subscribe();
-
-            Observable.interval(100, TimeUnit.MICROSECONDS)
-                    .subscribe(tt -> System.out.println("tt == " + tt));
-        }).start();
-
-        int add = IntMath.checkedAdd(1, 2);
-
-        System.out.println("add == " + add);
+            System.out.println("next== " + next);
+            if (isExit(next)) {
+                running = false;
+                System.out.println(" exit ...");
+            }
+        }
+    }
 
 
-        throw new RuntimeException("eee");
+    private static boolean isExit(String next) {
+        next = StringUtils.strip(next);
+        if (StringUtils.isNotEmpty(next)) {
+            return StringUtils.equalsIgnoreCase(next, "\\q")
+                    || StringUtils.equalsIgnoreCase(next, "q");
+        }
+        return false;
     }
 
 
