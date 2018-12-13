@@ -16,4 +16,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:2.2.4"
     implementation 'com.google.guava:guava:27.0.1-jre'
     implementation 'org.apache.commons:commons-lang3:3.8.1'
+    // https://mvnrepository.com/artifact/javassist/javassist
+    implementation group: 'javassist', name: 'javassist', version: '3.3'
+    // https://mvnrepository.com/artifact/cglib/cglib
+    implementation group: 'cglib', name: 'cglib', version: '3.2.10'
+
 }
