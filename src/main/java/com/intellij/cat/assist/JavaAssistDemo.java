@@ -8,20 +8,53 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+/**
+ * http://www.javassist.org/tutorial/tutorial.html
+ */
 public class JavaAssistDemo {
 
-    public static void main(String[] args) throws NotFoundException,
-            CannotCompileException, IOException,
-            NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public static void main(String[] args) throws Throwable {
 
         System.out.println(String.class.getName());
         createDynamicClass();
 
-//        ####################
-        modifyExistsClass();
+        //   ####################
+//        modifyExistsClass(); // 由于 toClass() 之后，不能再调用 ctClass 的任何 api ,所有这个方法和下面的方法不能同时调用
+        // =============================
+        insert2Method();
 
     }
+
+    /**
+     * 在已有方法调用前插入代码 ，insertBefore ok ; insertAfter fail
+     */
+    private static void insert2Method()
+            throws NotFoundException, CannotCompileException,
+            NoSuchMethodException, InstantiationException,
+            IllegalAccessException, InvocationTargetException {
+        ClassPool pool = ClassPool.getDefault();
+        CtClass target = pool.get("com.intellij.cat.assist.StaticUser");
+
+        CtClass stringType = pool.get(String.class.getName());
+        CtMethod useless = target.getDeclaredMethod("useless", new CtClass[]{stringType});
+        // 构造一个新方法，专门用来打印日志的
+        String logSrc = "public void log(String info){System.err.println(info);}";
+        CtMethod logMethod = CtMethod.make(logSrc, target);
+        target.addMethod(logMethod); // 先把新方法添加到类中(其实是添加到字节码里面)
+
+        useless.insertBefore("System.err.println(\"before...useless call\");"); // ok
+        useless.insertBefore("log(\"log before...useless call\");"); // ok
+//        useless.insertAfter("System.err.println(\"456 abc \");");  //  insertAfter 会报错，不清楚原因！！！
+
+        Class<StaticUser> clazz = target.toClass();
+
+//        System.out.println(target);
+//        System.out.println(clazz);
+        Constructor con = clazz.getDeclaredConstructor(int.class, String.class);
+        StaticUser obj = (StaticUser) con.newInstance(27, "吉姆");
+        obj.useless("无用的方法了..."); // 会先打印 before...useless call
+    }
+
 
     /**
      * 修改已有类，在里面添加方法 并调用该方法

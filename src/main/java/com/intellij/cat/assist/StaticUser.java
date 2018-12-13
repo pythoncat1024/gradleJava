@@ -34,4 +34,10 @@ public class StaticUser {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+
+    public String useless(String src) {
+        System.out.println("this is an useless method..." + src);
+        return "123456";
+    }
 }
